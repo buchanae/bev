@@ -9,6 +9,14 @@ from datetime import datetime
 
 __version__ = '0.2'
 
+CMD_BLACKLIST='ls cd'.split()
+
+cmd = os.path.expanduser(os.path.expandvars(' '.join(sys.argv[1:])))
+
+if cmd in CMD_BLACKLIST:
+    sys.exit()
+
+
 logging.basicConfig(level=logging.WARNING)
 
 DEFAULT_LOG_PATH = os.path.expanduser('~/.bev_log')
@@ -23,7 +31,6 @@ if not os.path.exists(os.path.dirname(log_path)):
     logging.warning("Bev: reverting to default log path. {}".format(DEFAULT_LOG_PATH))
     log_path = DEFAULT_LOG_PATH
 
-cmd = os.path.expanduser(os.path.expandvars(' '.join(sys.argv[1:])))
 
 cwd = os.getcwd()
 

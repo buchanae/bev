@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import json
+import logging
 import os
 import sys
 from datetime import datetime
@@ -8,9 +9,19 @@ from datetime import datetime
 
 __version__ = '0.2'
 
+logging.basicConfig(level=logging.WARNING)
+
 DEFAULT_LOG_PATH = os.path.expanduser('~/.bev_log')
 
 log_path = os.environ.get('BEV_LOG_PATH', DEFAULT_LOG_PATH)
+
+if not log_path:
+    log_path = DEFAULT_LOG_PATH
+
+if not os.path.exists(os.path.dirname(log_path)):
+    logging.warning("Bev: log path doesn't exist. {}".format(log_path))
+    logging.warning("Bev: reverting to default log path. {}".format(DEFAULT_LOG_PATH))
+    log_path = DEFAULT_LOG_PATH
 
 cmd = os.path.expanduser(os.path.expandvars(' '.join(sys.argv[1:])))
 

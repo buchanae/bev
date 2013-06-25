@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
+import json
 import os
 import sys
 from datetime import datetime
 
+
+__version__ = '0.2'
 
 DEFAULT_LOG_PATH = os.path.expanduser('~/.bev_log')
 
@@ -15,10 +18,6 @@ cwd = os.getcwd()
 
 last_change = '0'
 
-project = os.environ.get('BEV_PROJECT')
-if not project:
-    project = 'none'
-
 if os.path.exists(log_path):
     st = os.stat(log_path)
     last_change = str(st.st_mtime)
@@ -26,6 +25,11 @@ if os.path.exists(log_path):
 now = str(datetime.now())
 with open(log_path, 'a') as fh:
 
-    cols = [cwd, cmd, last_change, project, now]
-    record = '\t'.join(cols) 
-    fh.write(record + '\n')
+    s = json.dumps({
+        'version': __version__,
+        'cwd': cwd,
+        'cmd': cmd,
+        'last_change': last_change,
+        'now': now,
+    })
+    fh.write(s + '\n')

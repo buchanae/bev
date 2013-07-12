@@ -7,7 +7,7 @@ import sys
 from datetime import datetime
 
 
-__version__ = '0.2'
+__version__ = '0.3.0'
 
 CMD_BLACKLIST='ls cd'.split()
 
@@ -32,6 +32,8 @@ if not os.path.exists(os.path.dirname(log_path)):
     log_path = DEFAULT_LOG_PATH
 
 
+tags = os.environ.get('BEV_TAGS', '')
+
 cwd = os.getcwd()
 
 last_change = '0'
@@ -49,5 +51,6 @@ with open(log_path, 'a') as fh:
         'cmd': cmd,
         'last_change': last_change,
         'now': now,
+        'tags': tags,
     })
     fh.write(s + '\n')
